@@ -1,0 +1,31 @@
+from PySide2 import QtCore
+from PySide2 import QtWidgets
+import qtmax
+
+def create_custom_panel():
+    class PyMaxDockWidget(QtWidgets.QDockWidget):
+        def __init__(self, parent=None):
+            super(PyMaxDockWidget, self).__init__(parent)
+            self.setWindowFlags(QtCore.Qt.Tool)
+            self.setWindowTitle('QC tool check v1.00')
+            self.initUI()
+            self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            qtmax.DisableMaxAcceleratorsOnFocus(self, True)
+
+        def initUI(self):
+            main_layout = QtWidgets.QVBoxLayout()
+            label = QtWidgets.QLabel("Custom panel content goes here")
+            main_layout.addWidget(label)
+
+            widget = QtWidgets.QWidget()
+            widget.setLayout(main_layout)
+            self.setWidget(widget)
+            self.resize(250, 100)
+
+    main_window = qtmax.GetQMaxMainWindow()
+    panel = PyMaxDockWidget(parent=main_window)
+    panel.setFloating(True)
+    panel.show()
+
+# Call the function to create the panel
+create_custom_panel()
