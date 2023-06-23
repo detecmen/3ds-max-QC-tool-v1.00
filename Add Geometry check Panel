@@ -1,0 +1,41 @@
+from PySide2 import QtCore
+from PySide2 import QtWidgets
+import qtmax
+
+def create_custom_panel():
+    class PyMaxDockWidget(QtWidgets.QDockWidget):
+        def __init__(self, parent=None):
+            super(PyMaxDockWidget, self).__init__(parent)
+            self.setWindowFlags(QtCore.Qt.Tool)
+            self.setWindowTitle('QC tool check v1.00')
+            self.initUI()
+            self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            qtmax.DisableMaxAcceleratorsOnFocus(self, True)
+
+        def initUI(self):
+            main_widget = QtWidgets.QWidget()
+            main_layout = QtWidgets.QVBoxLayout(main_widget)
+            
+            # Tab widget
+            tab_widget = QtWidgets.QTabWidget()
+            main_layout.addWidget(tab_widget)
+
+            # Geometry Check tab
+            geometry_check_tab = QtWidgets.QWidget()
+            geometry_check_layout = QtWidgets.QVBoxLayout(geometry_check_tab)
+            geometry_check_tab.setLayout(geometry_check_layout)
+            tab_widget.addTab(geometry_check_tab, "Geometry Check")
+
+            
+      
+
+            self.setWidget(main_widget)
+            self.resize(250, 200)
+
+    main_window = qtmax.GetQMaxMainWindow()
+    panel = PyMaxDockWidget(parent=main_window)
+    panel.setFloating(True)
+    panel.show()
+
+# Call the function to create the panel
+create_custom_panel()
